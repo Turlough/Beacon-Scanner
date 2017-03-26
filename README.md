@@ -1,6 +1,6 @@
 ## Overview
 
-This is an Android Studio reference app for the AndroidBeaconLibrary supporting AltBeacon compatible devices
+This is an Android Studio reference app for the AndroidBeaconLibrary supporting AltBeacon compatible devices.
 It has been cloned from the source at <https://altbeacon.github.io/android-beacon-library/samples.html>
 
 For demonstration, the parser layouts have been edited to work with Eddystone beacons.
