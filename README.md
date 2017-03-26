@@ -1,14 +1,10 @@
 ## Overview
 
 This is an Android Studio reference app for the AndroidBeaconLibrary supporting AltBeacon compatible devices
+It has been cloned from the source at <https://altbeacon.github.io/android-beacon-library/samples.html>
 
-If you are looking for an Eclipse reference project, see the eclipse branch.
-
-## Project Setup
-
-1. [Install Gradle](http://www.gradle.org/installation) version 2.9
-2. Install [Android Studio](https://developer.android.com/sdk/installing/studio.html) 1.5
-3. Install Google Android SDKs (API 23) (or install Android Studio which includes them)
-4. In this project directory, edit `local.properties`, and give it a line that
-   specifies the path to your Android SDK. (e.g. `sdk.dir=/Applications/Android
-   Studio.app/sdk`)
+For demonstration, the parser layouts have been edited to work with Eddystone beacons.
+A Raspberry Pi may be configured as a beacon as follows (Assuming Bluetooth available on the Pi)
+- To generate a command for an Eddystone URL beacon, enter the URL here in the calculator here: <http://yencarnacion.github.io/eddystone-url-calculator/>
+- It will generate the commands you need to run the pi as a beacon
+- You may need to follow these commands with the following command: *sudo hcitool cmd 0x08 0x000A 01*
