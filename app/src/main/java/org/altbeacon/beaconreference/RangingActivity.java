@@ -9,6 +9,9 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.altbeacon.beacon.AltBeacon;
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -16,10 +19,12 @@ import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
+import org.altbeacon.beacon.utils.UrlBeaconUrlCompressor;
 
 public class RangingActivity extends Activity implements BeaconConsumer {
     protected static final String TAG = "RangingActivity";
     private BeaconManager beaconManager = BeaconManager.getInstanceForApplication(this);
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,14 @@ public class RangingActivity extends Activity implements BeaconConsumer {
               if (beacons.size() > 0) {
                  //EditText editText = (EditText)RangingActivity.this.findViewById(R.id.rangingText);
                  Beacon firstBeacon = beacons.iterator().next();
-                 logToDisplay("The first beacon " + firstBeacon.toString() + " is about " + firstBeacon.getDistance() + " meters away.");
+//                 logToDisplay("The first beacon " + firstBeacon.toString() + " is about " + firstBeacon.getDistance() + " meters away.");
+
+                  for (Beacon beacon: beacons) {
+                      if (beacon.getServiceUuid() == 0xfeaa && beacon.getBeaconTypeCode() == 0x10) {
+                          logBeacon(beacon);
+                      }
+                  }
+
               }
            }
 
@@ -70,8 +82,20 @@ public class RangingActivity extends Activity implements BeaconConsumer {
         runOnUiThread(new Runnable() {
             public void run() {
                 EditText editText = (EditText)RangingActivity.this.findViewById(R.id.rangingText);
-                editText.append(line+"\n");
+                editText.setText(line+"\n\n");
             }
         });
+    }
+
+    private void logBeacon(Beacon beacon){
+        Log.i(TAG, gson.toJson(beacon));
+        String url;
+        if (beacon.getServiceUuid() == 0xfeaa && beacon.getBeaconTypeCode() == 0x10)
+             url = UrlBeaconUrlCompressor.uncompress(beacon.getId1().toByteArray());
+        else
+            url = "Type: " + beacon.getBeaconTypeCode();
+
+        String s = String.format("Name: '%s', Distance: %.2f metres away, Power: %d db\n\t %s", beacon.getBluetoothName(), beacon.getDistance(), beacon.getTxPower(), url);
+        logToDisplay(s);
     }
 }
