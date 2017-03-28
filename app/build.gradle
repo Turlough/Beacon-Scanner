@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'me.tatarka.retrolambda'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -16,6 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -23,5 +28,7 @@ dependencies {
     compile 'com.android.support:support-v13:25.2.0'
     //compile project(':android-beacon-library')
     compile 'org.altbeacon:android-beacon-library:2+'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.5'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
+
 }
